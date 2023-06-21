@@ -16,7 +16,7 @@ LCD_CONFIG_DIR="configs"
 # full path to RPi's boot config file
 RPI_CONFIG='/boot/config.txt'
 
-start () {
+start() {
   echo "############################################"
   echo "# Automated installer for the I2C 16x2 LCD #"
   echo "############################################"
@@ -24,7 +24,7 @@ start () {
 }
 
 # takes msg ($1) and status ($2) as args
-end () {
+end() {
   echo ""
   echo "############################################"
   echo "# Finished the setup script"
@@ -34,11 +34,11 @@ end () {
 }
 
 # takes message ($1) and level ($2) as args
-message () {
+message() {
   echo "[LCD] [$2] $1"
 }
 
-apt_install () {
+apt_install() {
   if ! apt update; then
     message "Unable to update APT." "ERROR"
     end "Check your Internet connection and try again." 1
@@ -59,58 +59,67 @@ apt_install () {
 }
 
 # takes a package ($1) as arg
-dpkg_check_installed () {
-  if dpkg -l "$1" > /dev/null 2>&1; then return 0; else return 1; fi
+dpkg_check_installed() {
+  if dpkg -l "$1" >/dev/null 2>&1; then return 0; else return 1; fi
 }
 
 # find line that contains $1 from file $2 and delete it permanently
-delete_line () {
-  sed -i '/'"$1"'/d' "$2" 2> /dev/null
+delete_line() {
+  sed -i '/'"$1"'/d' "$2" 2>/dev/null
 }
 
-# takes path to a file as first argument ($1) and creates a global 
+# takes path to a file as first argument ($1) and creates a global
 # $list array with non-empty and non-commented out lines as elements
-line_to_list () {
+line_to_list() {
   if [[ -z "$1" || ! -f "$1" ]]; then return 1; fi
 
-  unset list; list=(); local file="$1"; local line
+  unset list
+  list=()
+  local file="$1"
+  local line
 
   while read -r line; do
     if [[ -n "$line" && ! "$line" =~ ^\# ]]; then list+=("$line"); fi
-  done < "$file"
+  done <"$file"
 
   if [[ -z "${list[*]}" ]]; then return 1; fi
 }
 
 # takes path to an old modules file as first argument ($1) and a new file as second arg ($2).
 # it parses new and old files, appending missing modules to the old file instead of overwriting
-modules () {
+modules() {
   if [[ -z "$1" || -z "$2" ]]; then return 1; fi
 
-  local old_file="$1"; local new_file="$2"
+  local old_file="$1"
+  local new_file="$2"
 
   if [[ ! -f "$old_file" || -z $(cat "$old_file") ]]; then
     cp "$new_file" "$old_file"
   else
     if line_to_list "$new_file"; then
       for m in "${list[@]}"; do
-        if [[ ! $(cat "$old_file") =~ $m ]]; then echo "$m" | tee -a "$old_file" > /dev/null; fi
+        if [[ ! $(cat "$old_file") =~ $m ]]; then echo "$m" | tee -a "$old_file" >/dev/null; fi
       done
     fi
   fi
 }
 
 # parse /boot/config.txt and append i2c config if missing
-i2c_boot_config () {
-  local line; local i2c_reconfig; local i2c_reconfig_line
+i2c_boot_config() {
+  local line
+  local i2c_reconfig
+  local i2c_reconfig_line
 
   while read -r line; do
     if [[ "$line" =~ ^dtparam=i2c(_arm){0,1}(=on|=1){0,1}$ ]]; then
-      i2c_reconfig='false'; break
+      i2c_reconfig='false'
+      break
     elif [[ "$line" =~ ^dtparam=i2c(_arm){0,1}(=off|=0){1}$ ]]; then
-      i2c_reconfig='true'; i2c_reconfig_line="$line"; break
+      i2c_reconfig='true'
+      i2c_reconfig_line="$line"
+      break
     fi
-  done < "$RPI_CONFIG"
+  done <"$RPI_CONFIG"
 
   # backup config.txt
   cp "$RPI_CONFIG" "$RPI_CONFIG".backup
@@ -118,26 +127,29 @@ i2c_boot_config () {
   if [[ "$i2c_reconfig" == 'true' ]]; then
     # delete i2c=off config and append i2c=on config
     delete_line "$i2c_reconfig_line" "$RPI_CONFIG"
-    echo "dtparam=i2c" | tee -a "$RPI_CONFIG" > /dev/null
+    echo "dtparam=i2c" | tee -a "$RPI_CONFIG" >/dev/null
   elif [[ -z "$i2c_reconfig" ]]; then
     # i2c config not found, append to file
-    echo "dtparam=i2c" | tee -a "$RPI_CONFIG" > /dev/null
+    echo "dtparam=i2c" | tee -a "$RPI_CONFIG" >/dev/null
   fi
 
   message "Your $RPI_CONFIG was edited but there is a backup of the original file in $RPI_CONFIG.backup" 'INFO'
 }
-
 
 ############
 # Main logic
 start
 
 # check again if user is root in case user is calling this script directly
-if [[ "$(id -u)" -ne 0 ]]; then message "User is not root." 'ERROR'; end 'Re-run as root or append sudo.' 1; fi
+if [[ "$(id -u)" -ne 0 ]]; then
+  message "User is not root." 'ERROR'
+  end 'Re-run as root or append sudo.' 1
+fi
 
 trap "end 'Received a signal to stop.' 1" INT HUP TERM
 
-message 'Installing packages via APT.' 'INFO'; apt_install
+message 'Installing packages via APT.' 'INFO'
+apt_install
 
 message "Checking Py 'smbus' installation." 'INFO'
 if dpkg_check_installed 'python-smbus' && dpkg_check_installed 'python3-smbus'; then
@@ -162,10 +174,12 @@ if modules /etc/modprobe.d/raspi-blacklist.conf "$LCD_CONFIG_DIR"/raspi-blacklis
   message "Updated required modules in '/etc/modprobe.d/raspi-blacklist.conf.'" 'INFO'
 fi
 
-message "Enabling I2C on boot." 'INFO'; i2c_boot_config
+message "Enabling I2C on boot." 'INFO'
+i2c_boot_config
 
 echo "#################################################################"
 echo "# All finished! Press any key to REBOOT now or Ctrl+c to abort. #"
 echo "#################################################################"
 
-read -n1 -s; reboot now
+read -n1 -s
+reboot now
