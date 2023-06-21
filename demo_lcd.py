@@ -27,7 +27,7 @@ try:
         display.lcd_display_string("I am a display!", 1)
         # Give time for the message to be read
         sleep(2)
-        display.lcd_clear()                                # Clear the display of any data
+        display.lcd_clear()  # Clear the display of any data
         # Give time for the message to be read
         sleep(2)
 except KeyboardInterrupt:

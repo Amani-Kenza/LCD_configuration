@@ -10,14 +10,11 @@ import bs4
 display = drivers.Lcd()
 sleepSecond = 1
 minute = 60
-iteration = minute/sleepSecond
+iteration = minute / sleepSecond
 
-selectedCurrencyList = ["USD/TRY", "EUR/TRY",
-                        "EUR/USD", "GAU/TRY", u"BİST 100"]
+selectedCurrencyList = ["USD/TRY", "EUR/TRY", "EUR/USD", "GAU/TRY", "BİST 100"]
 
-fakeHeaders = {
-    'User-Agent': 'Google Chrome'
-}
+fakeHeaders = {"User-Agent": "Google Chrome"}
 
 
 def GetTime():
@@ -40,15 +37,15 @@ def PrintScreen(currency):
 
 
 def GetCurrencyList():
-    htmlResponse = requests.get(
-        url="https://tr.investing.com/", headers=fakeHeaders)
+    htmlResponse = requests.get(url="https://tr.investing.com/", headers=fakeHeaders)
     html = htmlResponse.content
     parsedHtml = bs4.BeautifulSoup(html, features="html.parser")
     htmlCurrencyList = parsedHtml.findAll("tr", {"class": "LeftLiContainer"})
     currencyTextList = list()
     for htmlCurrency in htmlCurrencyList:
-        currencyName = htmlCurrency.find(
-            "td", {"class": "left bold first noWrap"}).find("a").text
+        currencyName = (
+            htmlCurrency.find("td", {"class": "left bold first noWrap"}).find("a").text
+        )
         currencyValue = htmlCurrency.find("td", {"class": "lastNum"}).text
         if currencyName in selectedCurrencyList:
             currencyTextList.append(currencyName + " " + currencyValue)
@@ -59,7 +56,7 @@ try:
     while True:
         currencyList = GetCurrencyList()
         if currencyList:
-            for i in range(int(iteration/len(currencyList))):
+            for i in range(int(iteration / len(currencyList))):
                 for item in currencyList:
                     PrintScreen(item)
                     time.sleep(sleepSecond)

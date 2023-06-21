@@ -32,26 +32,26 @@ try:
         display.lcd_backlight(1)
         # Waiting for backlight toggle
         sleep(0.5)
-        display.lcd_backlight(0)                          # Turn backlight off
+        display.lcd_backlight(0)  # Turn backlight off
         # Waiting for turning backlight on again
         sleep(0.5)
         # Turn backlight on again
         display.lcd_backlight(1)
-        sleep(1)                                          # Waiting for text
+        sleep(1)  # Waiting for text
         # Write line of text to first line of display
         display.lcd_display_string("Demo Backlight", 1)
         # Write line of text to second line of display
         display.lcd_display_string("Control ON/OFF", 2)
         # Waiting for backlight toggle
         sleep(2)
-        display.lcd_backlight(0)                          # Turn backlight off
+        display.lcd_backlight(0)  # Turn backlight off
         # Waiting for turning backlight on again
         sleep(0.5)
         # Turn backlight on again
         display.lcd_backlight(1)
         # Waiting for turning backlight off again
         sleep(0.5)
-        display.lcd_backlight(0)                          # Turn backlight off
+        display.lcd_backlight(0)  # Turn backlight off
         # Waiting for turning backlight on again
         sleep(0.5)
         # Turn backlight on again
@@ -64,10 +64,10 @@ try:
         display.lcd_display_string("Demo Backlight", 2)
         # Give time for the message to be read
         sleep(2)
-        display.lcd_clear()                               # Clear the display of any data
+        display.lcd_clear()  # Clear the display of any data
         # Give time for the message to be read
         sleep(1)
-        display.lcd_backlight(0)                          # Turn backlight off
+        display.lcd_backlight(0)  # Turn backlight off
         # Waiting until restart
         sleep(1.5)
 except KeyboardInterrupt:

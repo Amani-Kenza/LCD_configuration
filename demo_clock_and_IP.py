@@ -4,6 +4,7 @@ import drivers
 from time import sleep
 from datetime import datetime
 from subprocess import check_output
+
 display = drivers.Lcd()
 IP = check_output(["hostname", "-I"]).split()[0]
 try:

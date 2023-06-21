@@ -17,64 +17,76 @@ cc = drivers.CustomCharacters(display)
 
 # Redefine the default characters that will be used to create process bar:
 # Left full character. Code {0x00}.
-cc.char_1_data = ["01111",
-                  "11000",
-                  "10011",
-                  "10111",
-                  "10111",
-                  "10011",
-                  "11000",
-                  "01111"]
+cc.char_1_data = [
+    "01111",
+    "11000",
+    "10011",
+    "10111",
+    "10111",
+    "10011",
+    "11000",
+    "01111",
+]
 
 # Left empty character. Code {0x01}.
-cc.char_2_data = ["01111",
-                  "11000",
-                  "10000",
-                  "10000",
-                  "10000",
-                  "10000",
-                  "11000",
-                  "01111"]
+cc.char_2_data = [
+    "01111",
+    "11000",
+    "10000",
+    "10000",
+    "10000",
+    "10000",
+    "11000",
+    "01111",
+]
 
 # Central full character. Code {0x02}.
-cc.char_3_data = ["11111",
-                  "00000",
-                  "11011",
-                  "11011",
-                  "11011",
-                  "11011",
-                  "00000",
-                  "11111"]
+cc.char_3_data = [
+    "11111",
+    "00000",
+    "11011",
+    "11011",
+    "11011",
+    "11011",
+    "00000",
+    "11111",
+]
 
 # Central empty character. Code {0x03}.
-cc.char_4_data = ["11111",
-                  "00000",
-                  "00000",
-                  "00000",
-                  "00000",
-                  "00000",
-                  "00000",
-                  "11111"]
+cc.char_4_data = [
+    "11111",
+    "00000",
+    "00000",
+    "00000",
+    "00000",
+    "00000",
+    "00000",
+    "11111",
+]
 
 # Right full character. Code {0x04}.
-cc.char_5_data = ["11110",
-                  "00011",
-                  "11001",
-                  "11101",
-                  "11101",
-                  "11001",
-                  "00011",
-                  "11110"]
+cc.char_5_data = [
+    "11110",
+    "00011",
+    "11001",
+    "11101",
+    "11101",
+    "11001",
+    "00011",
+    "11110",
+]
 
 # Right empty character. Code {0x05}.
-cc.char_6_data = ["11110",
-                  "00011",
-                  "00001",
-                  "00001",
-                  "00001",
-                  "00001",
-                  "00011",
-                  "11110"]
+cc.char_6_data = [
+    "11110",
+    "00011",
+    "00001",
+    "00001",
+    "00001",
+    "00001",
+    "00011",
+    "11110",
+]
 
 # Load custom characters data to CG RAM:
 cc.load_custom_characters_data()
@@ -121,8 +133,7 @@ try:
                     bar_string = bar_string + "{0x02}"
 
         # Print the string to display:
-        display.lcd_display_extended_string(
-            bar_string + " {0}% ".format(charge), 2)
+        display.lcd_display_extended_string(bar_string + " {0}% ".format(charge), 2)
 
         # Update the charge and recalculate bar_repr
         charge += charge_delta
