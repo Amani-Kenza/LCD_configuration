@@ -1,12 +1,11 @@
 #! /usr/bin/env python
-
 # Programm showing anumated progress bar using custom characters.
 # Demo program for the I2C 16x2 Display
 # Created by Dmitry Safonov
-
-# Import necessary libraries for communication and display use
-import drivers
 from time import sleep
+
+import drivers
+# Import necessary libraries for communication and display use
 
 # Load the driver and set it to "display"
 # If you use something from the driver library use the "display." prefix first
@@ -17,64 +16,76 @@ cc = drivers.CustomCharacters(display)
 
 # Redefine the default characters that will be used to create process bar:
 # Left full character. Code {0x00}.
-cc.char_1_data = ["01111",
-                  "11000",
-                  "10011",
-                  "10111",
-                  "10111",
-                  "10011",
-                  "11000",
-                  "01111"]
+cc.char_1_data = [
+    "01111",
+    "11000",
+    "10011",
+    "10111",
+    "10111",
+    "10011",
+    "11000",
+    "01111",
+]
 
 # Left empty character. Code {0x01}.
-cc.char_2_data = ["01111",
-                  "11000",
-                  "10000",
-                  "10000",
-                  "10000",
-                  "10000",
-                  "11000",
-                  "01111"]
+cc.char_2_data = [
+    "01111",
+    "11000",
+    "10000",
+    "10000",
+    "10000",
+    "10000",
+    "11000",
+    "01111",
+]
 
 # Central full character. Code {0x02}.
-cc.char_3_data = ["11111",
-                  "00000",
-                  "11011",
-                  "11011",
-                  "11011",
-                  "11011",
-                  "00000",
-                  "11111"]
+cc.char_3_data = [
+    "11111",
+    "00000",
+    "11011",
+    "11011",
+    "11011",
+    "11011",
+    "00000",
+    "11111",
+]
 
 # Central empty character. Code {0x03}.
-cc.char_4_data = ["11111",
-                  "00000",
-                  "00000",
-                  "00000",
-                  "00000",
-                  "00000",
-                  "00000",
-                  "11111"]
+cc.char_4_data = [
+    "11111",
+    "00000",
+    "00000",
+    "00000",
+    "00000",
+    "00000",
+    "00000",
+    "11111",
+]
 
 # Right full character. Code {0x04}.
-cc.char_5_data = ["11110",
-                  "00011",
-                  "11001",
-                  "11101",
-                  "11101",
-                  "11001",
-                  "00011",
-                  "11110"]
+cc.char_5_data = [
+    "11110",
+    "00011",
+    "11001",
+    "11101",
+    "11101",
+    "11001",
+    "00011",
+    "11110",
+]
 
 # Right empty character. Code {0x05}.
-cc.char_6_data = ["11110",
-                  "00011",
-                  "00001",
-                  "00001",
-                  "00001",
-                  "00001",
-                  "00011",
-                  "11110"]
+cc.char_6_data = [
+    "11110",
+    "00011",
+    "00001",
+    "00001",
+    "00001",
+    "00001",
+    "00011",
+    "11110",
+]
 
 # Load custom characters data to CG RAM:
 cc.load_custom_characters_data()
@@ -101,7 +112,7 @@ try:
                     # Left empty character
                     bar_string = bar_string + "{0x01}"
                 else:
-                    # Left full character 
+                    # Left full character
                     bar_string = bar_string + "{0x00}"
             elif i == 9:
                 # Right character
@@ -121,21 +132,22 @@ try:
                     bar_string = bar_string + "{0x02}"
 
         # Print the string to display:
-        display.lcd_display_extended_string(bar_string + " {0}% ".format(charge), 2)
+        display.lcd_display_extended_string(
+            bar_string + " {0}% ".format(charge), 2)
 
         # Update the charge and recalculate bar_repr
         charge += charge_delta
         if (charge >= MAX_CHARGE) or (charge <= MIN_CHARGE):
             charge_delta = -1 * charge_delta
-        
+
         for i in range(10):
             if charge >= ((i + 1) * 10):
                 bar_repr[i] = 1
             else:
-                bar_repr[i] = 0            
+                bar_repr[i] = 0
 
         # Wait for some time
-        sleep(1) 
+        sleep(1)
 
 except KeyboardInterrupt:
     # If there is a KeyboardInterrupt (when you press ctrl+c), exit the program and cleanup

@@ -1,13 +1,12 @@
 #! /usr/bin/env python
-
 # Simple clock program. Writes the exact time.
 # Demo program for the I2C 16x2 Display from Ryanteck.uk
 # Created by Matthew Timmons-Brown for The Raspberry Pi Guy YouTube channel
-
-# Import necessary libraries for communication and display use
-import drivers
-from time import sleep
 from datetime import datetime
+from time import sleep
+
+import drivers
+# Import necessary libraries for communication and display use
 
 # Load the driver and set it to "display"
 # If you use something from the driver library use the "display." prefix first
@@ -15,7 +14,8 @@ display = drivers.Lcd()
 
 try:
     print("Writing to display")
-    display.lcd_display_string("No time to waste", 1)  # Write line of text to first line of display
+    # Write line of text to first line of display
+    display.lcd_display_string("No time to waste", 1)
     while True:
         # Write just the time to the display
         display.lcd_display_string(str(datetime.now().time()), 2)

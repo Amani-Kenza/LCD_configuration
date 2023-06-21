@@ -1,1 +1,2 @@
-from .i2c_dev import Lcd, CustomCharacters
+from .i2c_dev import CustomCharacters
+from .i2c_dev import Lcd

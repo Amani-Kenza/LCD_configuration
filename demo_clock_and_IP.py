@@ -1,9 +1,10 @@
 #! /usr/bin/env python
-
-import drivers
-from time import sleep
 from datetime import datetime
 from subprocess import check_output
+from time import sleep
+
+import drivers
+
 display = drivers.Lcd()
 IP = check_output(["hostname", "-I"]).split()[0]
 try:
