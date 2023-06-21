@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-import drivers
-from datetime import date
-from datetime import time
-from datetime import datetime
-import time
-import threading
-import requests
 import socket
+import threading
+import time
+from datetime import date, datetime, time
+
+import requests
+
+import drivers
 
 """
 This is a script that takes info from some apis and shows it in the 16*2 display.

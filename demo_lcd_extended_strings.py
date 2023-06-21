@@ -6,9 +6,10 @@
 # Demo program for the I2C 16x2 Display from Ryanteck.uk
 # Created by Matthew Timmons-Brown for The Raspberry Pi Guy YouTube channel
 
+from time import sleep
+
 # Import necessary libraries for communication and display use
 import drivers
-from time import sleep
 
 # Load the driver and set it to "display"
 # If you use something from the driver library use the "display." prefix first

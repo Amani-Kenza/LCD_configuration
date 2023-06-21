@@ -4,9 +4,10 @@
 # Demo program for the I2C 16x2 Display
 # Created by Dmitry Safonov
 
+from time import sleep
+
 # Import necessary libraries for communication and display use
 import drivers
-from time import sleep
 
 # Load the driver and set it to "display"
 # If you use something from the driver library use the "display." prefix first

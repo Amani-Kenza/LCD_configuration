@@ -1,11 +1,13 @@
 #! /usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import drivers
-import time
-import requests
 import datetime
+import time
+
 import bs4
+import requests
+
+import drivers
 
 display = drivers.Lcd()
 sleepSecond = 1

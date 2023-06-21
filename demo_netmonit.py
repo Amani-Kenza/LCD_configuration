@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
-import drivers
-from time import sleep
 from os import devnull
 from subprocess import call, check_output
+from time import sleep
+
+import drivers
 
 
 def cleanup():

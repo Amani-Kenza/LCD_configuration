@@ -14,9 +14,10 @@
 # import sys
 # sys.path.append("/home/pi/lcd")
 
+from time import sleep
+
 # Import necessary libraries for communication and display use
 import drivers
-from time import sleep
 
 # Load the driver and set it to "display"
 # If you use something from the driver library use the "display." prefix first
