@@ -38,15 +38,16 @@ def PrintScreen(currency):
 
 
 def GetCurrencyList():
-    htmlResponse = requests.get(url="https://tr.investing.com/", headers=fakeHeaders)
+    htmlResponse = requests.get(url="https://tr.investing.com/",
+                                headers=fakeHeaders)
     html = htmlResponse.content
     parsedHtml = bs4.BeautifulSoup(html, features="html.parser")
     htmlCurrencyList = parsedHtml.findAll("tr", {"class": "LeftLiContainer"})
     currencyTextList = list()
     for htmlCurrency in htmlCurrencyList:
-        currencyName = (
-            htmlCurrency.find("td", {"class": "left bold first noWrap"}).find("a").text
-        )
+        currencyName = (htmlCurrency.find("td", {
+            "class": "left bold first noWrap"
+        }).find("a").text)
         currencyValue = htmlCurrency.find("td", {"class": "lastNum"}).text
         if currencyName in selectedCurrencyList:
             currencyTextList.append(currencyName + " " + currencyValue)

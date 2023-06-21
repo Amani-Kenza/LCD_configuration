@@ -22,8 +22,7 @@ try:
         display.lcd_display_string("Simple string", 1)
         # Write line of text to second line of display
         display.lcd_display_extended_string(
-            "Ext. str:{0xEF}{0xF6}{0xA5}{0xDF}{0xA3}", 2
-        )
+            "Ext. str:{0xEF}{0xF6}{0xA5}{0xDF}{0xA3}", 2)
         sleep(2)  # Give time for the message to be read
 except KeyboardInterrupt:
     # If there is a KeyboardInterrupt (when you press ctrl+c), exit the program and cleanup

@@ -9,7 +9,6 @@ from datetime import time
 import requests
 
 import drivers
-
 """
 This is a script that takes info from some apis and shows it in the 16*2 display.
 It uses the following apis:
@@ -70,54 +69,41 @@ def thread_get_quotable():
         global disp_string_quote
         try:
             api_quotable_req = requests.get(
-                quotable_baseurl.format(quote_minLength, quote_maxLength)
-            )
-            print(
-                "thread_get_quotable got response code: "
-                + str(api_quotable_req.status_code)
-            )  # response
+                quotable_baseurl.format(quote_minLength, quote_maxLength))
+            print("thread_get_quotable got response code: " +
+                  str(api_quotable_req.status_code))  # response
             api_quotable_json = api_quotable_req.json()  # convert it to json
-            disp_string_quote = (
-                api_quotable_json[0]["content"] + " - " + api_quotable_json[0]["author"]
-            )
+            disp_string_quote = (api_quotable_json[0]["content"] + " - " +
+                                 api_quotable_json[0]["author"])
             print(
-                str(datetime.now())
-                + " "
-                + "thread_get_quotable got a quote to display:\n"
-                + "\t\t"
-                + disp_string_quote
-            )
+                str(datetime.now()) + " " +
+                "thread_get_quotable got a quote to display:\n" + "\t\t" +
+                disp_string_quote)
             time.sleep(600)
         except KeyError:
             disp_string_quote = "There is an error, we need to review log and debug"
             print(
-                str(datetime.now())
-                + " "
-                + "thread_get_quotable got an API error:\n"
-                + "\t\t"
-                + disp_string_quote
-            )
+                str(datetime.now()) + " " +
+                "thread_get_quotable got an API error:\n" + "\t\t" +
+                disp_string_quote)
             time.sleep(300)
         except ConnectionError:
             disp_string_quote = "Connection Error while getting the quote. Will try again in 10 seconds."
             print(
-                str(datetime.now())
-                + " "
-                + "thread_get_quotable got a ConnectionError. will try again in 10 seconds."
+                str(datetime.now()) + " " +
+                "thread_get_quotable got a ConnectionError. will try again in 10 seconds."
             )
             time.sleep(10)
         except ValueError:
             disp_string_quote = "JSON Decode Error while getting the quote. Will try again in 20 seconds."
             print(
-                str(datetime.now())
-                + " "
-                + "thread_get_quotable got a ValueError. will try again in 20 seconds."
+                str(datetime.now()) + " " +
+                "thread_get_quotable got a ValueError. will try again in 20 seconds."
             )
             time.sleep(20)
         except:
             disp_string_quote = (
-                "There is an unknown error, we need to review log and debug"
-            )
+                "There is an unknown error, we need to review log and debug")
 
 
 def thread_get_currency_conversion(
@@ -134,78 +120,66 @@ def thread_get_currency_conversion(
     ERA updates once every day.
     We are prioritizing ERA over FCC.
     """
-    print(str(datetime.now()) + " " + "starting the currency conversion request")
+    print(
+        str(datetime.now()) + " " + "starting the currency conversion request")
     while True:
         global disp_string_convCur_value
         try:
             try:
                 base_url = "https://v6.exchangerate-api.com/v6/{}/pair/{}/{}"
                 api_ExchangeRateAPI_request = requests.get(
-                    base_url.format(tokenERA, c1, c2)
-                )
+                    base_url.format(tokenERA, c1, c2))
                 api_ExchangeRateAPI_json = api_ExchangeRateAPI_request.json()
-                disp_string_convCur_value = (
-                    "1"
-                    + c1
-                    + ":"
-                    + str(round(api_ExchangeRateAPI_json["conversion_rate"], 2))
-                    + c2
-                )
+                disp_string_convCur_value = ("1" + c1 + ":" + str(
+                    round(api_ExchangeRateAPI_json["conversion_rate"], 2)) +
+                                             c2)
                 print(
-                    str(datetime.now())
-                    + " "
-                    + "thr3_dollarconv got an update from ERA: "
-                    + disp_string_convCur_value
-                )
+                    str(datetime.now()) + " " +
+                    "thr3_dollarconv got an update from ERA: " +
+                    disp_string_convCur_value)
                 time.sleep(86400)
             except (ConnectionError, KeyError, ValueError) as e:
                 base_url = "https://free.currconv.com/api/v7/convert?q={}_{}&compact=ultra&apiKey={}"
                 api_freeCurrConv_request = requests.get(
-                    base_url.format(c1, c2, tokenFCC)
-                )
+                    base_url.format(c1, c2, tokenFCC))
                 api_freeCurrConv_json = api_freeCurrConv_request.json()
                 fcc_rate = c1 + "_" + c2
                 disp_string_convCur_value = (
-                    "1" + c1 + ":" + str(round(api_freeCurrConv_json[fcc_rate], 2)) + c2
-                )
+                    "1" + c1 + ":" +
+                    str(round(api_freeCurrConv_json[fcc_rate], 2)) + c2)
                 print(
-                    str(datetime.now())
-                    + " "
-                    + "thr3_dollarconv got an update from FCC: "
-                    + disp_string_convCur_value
-                )
+                    str(datetime.now()) + " " +
+                    "thr3_dollarconv got an update from FCC: " +
+                    disp_string_convCur_value)
                 time.sleep(3600)
         except KeyError:
             disp_string_convCur_value = "JSON Key error on exchange rate response. Check log. Retrying in 5 min."
             print(
-                str(datetime.now())
-                + " thr3_dollarconv got an API error. \nFCC:"
-                + str(api_freeCurrConv_json)
-                + "\nERA:"
-                + str(api_ExchangeRateAPI_json)
-            )
+                str(datetime.now()) +
+                " thr3_dollarconv got an API error. \nFCC:" +
+                str(api_freeCurrConv_json) + "\nERA:" +
+                str(api_ExchangeRateAPI_json))
             time.sleep(300)
         except ConnectionError:
             disp_string_convCur_value = "Connection Error while getting the exchange rate. Will try again in 10 seconds."
             print(
-                str(datetime.now())
-                + " thr3_dollarconv got a ConnectionError. will try again in 10 seconds."
+                str(datetime.now()) +
+                " thr3_dollarconv got a ConnectionError. will try again in 10 seconds."
             )
             time.sleep(10)
         except ValueError:
             disp_string_convCur_value = "JSON Decode Error while getting the exchange rate. Will try again in 20 seconds."
             print(
-                str(datetime.now())
-                + " thr3_dollarconv got a ValueError. will try again in 20 seconds."
+                str(datetime.now()) +
+                " thr3_dollarconv got a ValueError. will try again in 20 seconds."
             )
             time.sleep(20)
 
             # We have to find the possible errors that can happen.
 
 
-def thread_get_weather_info(
-    tokenOWM=api_OpenWeather_token, cityid=api_OpenWeather_yourCity
-):
+def thread_get_weather_info(tokenOWM=api_OpenWeather_token,
+                            cityid=api_OpenWeather_yourCity):
     """
     get the weather info for my city
     """
@@ -213,44 +187,38 @@ def thread_get_weather_info(
     while True:
         try:
             base_url = "https://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid={}"
-            api_OpenWeather_request = requests.get(base_url.format(cityid, tokenOWM))
+            api_OpenWeather_request = requests.get(
+                base_url.format(cityid, tokenOWM))
             api_OpenWeather_json = api_OpenWeather_request.json()
             disp_string_weatherInfo = (
-                str(round(api_OpenWeather_json["main"]["temp"]))
-                + "￟C - "
-                + api_OpenWeather_json["weather"][0]["description"]
-                + " - "
-                + api_OpenWeather_json["name"]
-            )
+                str(round(api_OpenWeather_json["main"]["temp"])) + "￟C - " +
+                api_OpenWeather_json["weather"][0]["description"] + " - " +
+                api_OpenWeather_json["name"])
             print(
-                str(datetime.now())
-                + " "
-                + "thr4_weatherinfo got an update: "
-                + disp_string_weatherInfo
-            )
+                str(datetime.now()) + " " +
+                "thr4_weatherinfo got an update: " + disp_string_weatherInfo)
             time.sleep(600)
         except KeyError:
             disp_string_weatherInfo = (
                 "JSON Key error on weather info response. Check log. Retrying in 5 min."
             )
             print(
-                str(datetime.now())
-                + " thr4_weatherinfo got an API error. \n"
-                + str(api_OpenWeather_json)
-            )
+                str(datetime.now()) +
+                " thr4_weatherinfo got an API error. \n" +
+                str(api_OpenWeather_json))
             time.sleep(360)
         except ConnectionError:
             disp_string_weatherInfo = "Connection Error while getting the weather info. Will try again in 10 seconds."
             print(
-                str(datetime.now())
-                + " thr4_weatherinfo got a ConnectionError. will try again in 10 seconds."
+                str(datetime.now()) +
+                " thr4_weatherinfo got a ConnectionError. will try again in 10 seconds."
             )
             time.sleep(10)
         except ValueError:
             disp_string_weatherInfo = "JSON Decode Error while getting the weather info. Will try again in 20 seconds."
             print(
-                str(datetime.now())
-                + " thr4_weatherinfo got a ValueError. will try again in 20 seconds."
+                str(datetime.now()) +
+                " thr4_weatherinfo got a ValueError. will try again in 20 seconds."
             )
             time.sleep(20)
 
@@ -267,7 +235,7 @@ def long_string(display, text="", num_line=2, num_cols=16, speed=0.1):
         display.lcd_display_string(text[:num_cols], num_line)
         time.sleep(3)
         for i in range(len(text) - num_cols + 1):
-            text_to_print = text[i : i + num_cols]
+            text_to_print = text[i:i + num_cols]
             display.lcd_display_string(text_to_print, num_line)
             time.sleep(speed)
         time.sleep(1)
@@ -303,15 +271,9 @@ def first_line():
     # This shows the last 3 characters of our IP, the day and the month, and lastly the hour, a semicolon and the minutes.
     my_ip = get_ip()
     display.lcd_display_string(
-        "i:"
-        + my_ip[-3:]
-        + " "
-        + str(mytime.tm_mday).zfill(2)
-        + str(mytime.tm_mon).zfill(2)
-        + " "
-        + str(mytime.tm_hour)
-        + ":"
-        + str(mytime.tm_min).zfill(2),
+        "i:" + my_ip[-3:] + " " + str(mytime.tm_mday).zfill(2) +
+        str(mytime.tm_mon).zfill(2) + " " + str(mytime.tm_hour) + ":" +
+        str(mytime.tm_min).zfill(2),
         1,
     )
 
@@ -321,9 +283,12 @@ print("\nRPi TINY DASHBOARD FOR 16X2 DISPLAY.\n")
 # CREATING AND CALLING THREADS STARTS HERE
 if __name__ == "__main__":
     # Start by declaring all these threads
-    thr1_get_quotable = threading.Thread(target=thread_get_quotable, daemon=True)
-    thr2_currconv = threading.Thread(target=thread_get_currency_conversion, daemon=True)
-    thr3_weatherinfo = threading.Thread(target=thread_get_weather_info, daemon=True)
+    thr1_get_quotable = threading.Thread(target=thread_get_quotable,
+                                         daemon=True)
+    thr2_currconv = threading.Thread(target=thread_get_currency_conversion,
+                                     daemon=True)
+    thr3_weatherinfo = threading.Thread(target=thread_get_weather_info,
+                                        daemon=True)
 
     # Then we start the threads that populate the variables
     # We wait while the global variables get populated, then start the threads.
@@ -356,13 +321,11 @@ if __name__ == "__main__":
             long_string(display, disp_string_quote, 2)
             time.sleep(2)
             display.lcd_clear()
-
             """ display first line and weather info """
             first_line()
             long_string(display, disp_string_weatherInfo, 2)
             time.sleep(2)
             display.lcd_clear()
-
             """ display first line and currency conversion """
             first_line()
             long_string(display, disp_string_convCur_value, 2)

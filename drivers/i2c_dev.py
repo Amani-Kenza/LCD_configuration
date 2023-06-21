@@ -59,25 +59,21 @@ Rs = 0b00000001  # Register select bit
 
 
 class I2CDevice:
+
     def __init__(self, addr=None, addr_default=None, bus=BUS_NUMBER):
         if not addr:
             # try autodetect address, else use default if provided
             try:
-                self.addr = (
-                    int(
-                        "0x{}".format(
-                            findall(
-                                "[0-9a-z]{2}(?!:)",
-                                check_output(
-                                    ["/usr/sbin/i2cdetect", "-y", str(BUS_NUMBER)]
-                                ).decode(),
-                            )[0]
-                        ),
-                        base=16,
-                    )
-                    if exists("/usr/sbin/i2cdetect")
-                    else addr_default
-                )
+                self.addr = (int(
+                    "0x{}".format(
+                        findall(
+                            "[0-9a-z]{2}(?!:)",
+                            check_output(
+                                ["/usr/sbin/i2cdetect", "-y",
+                                 str(BUS_NUMBER)]).decode(),
+                        )[0]),
+                    base=16,
+                ) if exists("/usr/sbin/i2cdetect") else addr_default)
             except:
                 self.addr = addr_default
         else:
@@ -113,6 +109,7 @@ class I2CDevice:
 
 
 class Lcd:
+
     def __init__(self, addr=None):
         self.addr = addr
         self.lcd = I2CDevice(addr=self.addr, addr_default=0x27)
@@ -120,7 +117,8 @@ class Lcd:
         self.lcd_write(0x03)
         self.lcd_write(0x03)
         self.lcd_write(0x02)
-        self.lcd_write(LCD_FUNCTIONSET | LCD_2LINE | LCD_5x8DOTS | LCD_4BITMODE)
+        self.lcd_write(LCD_FUNCTIONSET | LCD_2LINE | LCD_5x8DOTS
+                       | LCD_4BITMODE)
         self.lcd_write(LCD_DISPLAYCONTROL | LCD_DISPLAYON)
         self.lcd_write(LCD_CLEARDISPLAY)
         self.lcd_write(LCD_ENTRYMODESET | LCD_ENTRYLEFT)
@@ -192,6 +190,7 @@ class Lcd:
 
 
 class CustomCharacters:
+
     def __init__(self, lcd):
         self.lcd = lcd
         # Data for custom character #1. Code {0x00}.

@@ -20,25 +20,22 @@ def end(msg=None, status=0):
 
 # Returns True if host responds to a ping request within the timeout interval
 def ping(host, timeout=3):
-    return (
-        call(
-            ["ping", "-c", "1", "-W", str(timeout), str(host)],
-            stdout=open(devnull, "w"),
-            stderr=open(devnull, "w"),
-        )
-        == 0
-    )
+    return (call(
+        ["ping", "-c", "1", "-W",
+         str(timeout), str(host)],
+        stdout=open(devnull, "w"),
+        stderr=open(devnull, "w"),
+    ) == 0)
 
 
 # Returns True if host has given port open
 def nc(host, port, timeout=3):
-    return (
-        call(
-            ["nc", "-z", "-w", str(timeout), str(host), str(port)],
-            stderr=open(devnull, "w"),
-        )
-        == 0
-    )
+    return (call(
+        ["nc", "-z", "-w",
+         str(timeout), str(host),
+         str(port)],
+        stderr=open(devnull, "w"),
+    ) == 0)
 
 
 # assumes that running 16x2 LCD
@@ -49,7 +46,7 @@ def lcd_print(top=None, bottom=None, delay=5):
     if len(bottom) > 16:
         display.lcd_display_string(bottom[:16], 2)
         for i in range(len(bottom) - 15):
-            display.lcd_display_string(bottom[i : i + 16], 2)
+            display.lcd_display_string(bottom[i:i + 16], 2)
             sleep(0.5)
     else:
         display.lcd_display_string("{:^16}".format(bottom), 2)
@@ -73,16 +70,15 @@ def main():
                 lcd_print(
                     top="# NetMonitor #",
                     bottom="{} is UP".format(host)
-                    if ping(address)
-                    else "{} is DOWN".format(host),
+                    if ping(address) else "{} is DOWN".format(host),
                 )
             # use netcat for services
             for service, address in services.items():
                 lcd_print(
                     top="# NetMonitor #",
-                    bottom="{} is UP".format(service)
-                    if nc(address["ip"], address["port"])
-                    else "{} is DOWN".format(service),
+                    bottom="{} is UP".format(service) if nc(
+                        address["ip"], address["port"]) else
+                    "{} is DOWN".format(service),
                 )
     except KeyboardInterrupt:
         end("Signal to stop", 0)
@@ -94,10 +90,20 @@ if __name__ == "__main__":
     # create a display object from the Lcd class
     display = drivers.Lcd()
     # customizable dict of unique, pingable hosts
-    hosts = {"Internet": "8.8.8.8", "Firewall": "192.168.1.1", "NAS": "192.168.1.2"}
+    hosts = {
+        "Internet": "8.8.8.8",
+        "Firewall": "192.168.1.1",
+        "NAS": "192.168.1.2"
+    }
     # customizable dict of unique, netcatable services
     services = {
-        "Cameras": {"ip": "192.168.1.2", "port": "8000"},
-        "Plex": {"ip": "192.168.1.2", "port": "32400"},
+        "Cameras": {
+            "ip": "192.168.1.2",
+            "port": "8000"
+        },
+        "Plex": {
+            "ip": "192.168.1.2",
+            "port": "32400"
+        },
     }
     main()

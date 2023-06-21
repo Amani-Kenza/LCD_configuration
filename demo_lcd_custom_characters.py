@@ -131,8 +131,7 @@ try:
         display.lcd_display_string("Custom caracters:", 1)
         # Write line of text to second line of display
         display.lcd_display_extended_string(
-            "{0x00}{0x01}{0x02}{0x03}{0x04}{0x05}{0x06}{0x07}", 2
-        )
+            "{0x00}{0x01}{0x02}{0x03}{0x04}{0x05}{0x06}{0x07}", 2)
         sleep(2)  # Give time for the message to be read
 except KeyboardInterrupt:
     # If there is a KeyboardInterrupt (when you press ctrl+c), exit the program and cleanup
