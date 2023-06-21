@@ -15,7 +15,8 @@ display = drivers.Lcd()
 
 try:
     print("Writing to display")
-    display.lcd_display_string("No time to waste", 1)  # Write line of text to first line of display
+    # Write line of text to first line of display
+    display.lcd_display_string("No time to waste", 1)
     while True:
         # Write just the time to the display
         display.lcd_display_string(str(datetime.now().time()), 2)

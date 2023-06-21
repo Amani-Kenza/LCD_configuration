@@ -101,7 +101,7 @@ try:
                     # Left empty character
                     bar_string = bar_string + "{0x01}"
                 else:
-                    # Left full character 
+                    # Left full character
                     bar_string = bar_string + "{0x00}"
             elif i == 9:
                 # Right character
@@ -121,21 +121,22 @@ try:
                     bar_string = bar_string + "{0x02}"
 
         # Print the string to display:
-        display.lcd_display_extended_string(bar_string + " {0}% ".format(charge), 2)
+        display.lcd_display_extended_string(
+            bar_string + " {0}% ".format(charge), 2)
 
         # Update the charge and recalculate bar_repr
         charge += charge_delta
         if (charge >= MAX_CHARGE) or (charge <= MIN_CHARGE):
             charge_delta = -1 * charge_delta
-        
+
         for i in range(10):
             if charge >= ((i + 1) * 10):
                 bar_repr[i] = 1
             else:
-                bar_repr[i] = 0            
+                bar_repr[i] = 0
 
         # Wait for some time
-        sleep(1) 
+        sleep(1)
 
 except KeyboardInterrupt:
     # If there is a KeyboardInterrupt (when you press ctrl+c), exit the program and cleanup

@@ -55,6 +55,7 @@ En = 0b00000100  # Enable bit
 Rw = 0b00000010  # Read/Write bit
 Rs = 0b00000001  # Register select bit
 
+
 class I2CDevice:
     def __init__(self, addr=None, addr_default=None, bus=BUS_NUMBER):
         if not addr:
@@ -105,7 +106,8 @@ class Lcd:
         self.lcd_write(0x03)
         self.lcd_write(0x03)
         self.lcd_write(0x02)
-        self.lcd_write(LCD_FUNCTIONSET | LCD_2LINE | LCD_5x8DOTS | LCD_4BITMODE)
+        self.lcd_write(LCD_FUNCTIONSET | LCD_2LINE |
+                       LCD_5x8DOTS | LCD_4BITMODE)
         self.lcd_write(LCD_DISPLAYCONTROL | LCD_DISPLAYON)
         self.lcd_write(LCD_CLEARDISPLAY)
         self.lcd_write(LCD_ENTRYMODESET | LCD_ENTRYLEFT)
@@ -140,7 +142,7 @@ class Lcd:
         for char in string:
             self.lcd_write(ord(char), Rs)
 
-    # put extended string function. Extended string may contain placeholder like {0xFF} for 
+    # put extended string function. Extended string may contain placeholder like {0xFF} for
     # displaying the particular symbol from the symbol table
     def lcd_display_extended_string(self, string, line):
         if line == 1:
@@ -174,6 +176,7 @@ class Lcd:
             self.lcd.write_cmd(LCD_BACKLIGHT)
         elif state == 0:
             self.lcd.write_cmd(LCD_NOBACKLIGHT)
+
 
 class CustomCharacters:
     def __init__(self, lcd):
@@ -251,9 +254,9 @@ class CustomCharacters:
                             "10001",
                             "11111"]
 
-    # load custom character data to CG RAM for later use in extended string. Data for  
-    # characters is hold in file custom_characters.txt in the same folder as i2c_dev.py 
-    # file. These custom characters can be used in printing of extended string with a 
+    # load custom character data to CG RAM for later use in extended string. Data for
+    # characters is hold in file custom_characters.txt in the same folder as i2c_dev.py
+    # file. These custom characters can be used in printing of extended string with a
     # placeholder with desired character codes: 1st - {0x00}, 2nd - {0x01}, 3rd - {0x02},
     # 4th - {0x03}, 5th - {0x04}, 6th - {0x05}, 7th - {0x06} and 8th - {0x07}.
     def load_custom_characters_data(self):

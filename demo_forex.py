@@ -3,7 +3,7 @@
 
 import drivers
 import time
-import requests 
+import requests
 import datetime
 import bs4
 
@@ -12,7 +12,8 @@ sleepSecond = 1
 minute = 60
 iteration = minute/sleepSecond
 
-selectedCurrencyList = ["USD/TRY", "EUR/TRY", "EUR/USD", "GAU/TRY", u"BİST 100"]
+selectedCurrencyList = ["USD/TRY", "EUR/TRY",
+                        "EUR/USD", "GAU/TRY", u"BİST 100"]
 
 fakeHeaders = {
     'User-Agent': 'Google Chrome'
@@ -39,17 +40,20 @@ def PrintScreen(currency):
 
 
 def GetCurrencyList():
-    htmlResponse = requests.get(url="https://tr.investing.com/", headers=fakeHeaders)
+    htmlResponse = requests.get(
+        url="https://tr.investing.com/", headers=fakeHeaders)
     html = htmlResponse.content
     parsedHtml = bs4.BeautifulSoup(html, features="html.parser")
     htmlCurrencyList = parsedHtml.findAll("tr", {"class": "LeftLiContainer"})
     currencyTextList = list()
     for htmlCurrency in htmlCurrencyList:
-        currencyName = htmlCurrency.find("td", {"class": "left bold first noWrap"}).find("a").text
+        currencyName = htmlCurrency.find(
+            "td", {"class": "left bold first noWrap"}).find("a").text
         currencyValue = htmlCurrency.find("td", {"class": "lastNum"}).text
         if currencyName in selectedCurrencyList:
             currencyTextList.append(currencyName + " " + currencyValue)
     return currencyTextList
+
 
 try:
     while True:

@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 
 # Custom characters string program. Writes strings with custom characters, that can't
-# be found in the characters table. It is possible to use a custom characters by definig 
-# it's code on paseholder whyle useng and extended string. 
-# Appearance of the custom characters can be defined by redifenition of the fields of 
+# be found in the characters table. It is possible to use a custom characters by definig
+# it's code on paseholder whyle useng and extended string.
+# Appearance of the custom characters can be defined by redifenition of the fields of
 # CustomCaracters class instance.
 # Codes of the custom characters, that can be used in placeholders are the following:
-# 1st - {0x00}, 2nd - {0x01}, 3rd - {0x02}, 4th - {0x03}, 5th - {0x04}, 
+# 1st - {0x00}, 2nd - {0x01}, 3rd - {0x02}, 4th - {0x03}, 5th - {0x04},
 # 6th - {0x05}, 7th - {0x06} and 8th - {0x07}
 # Remember to use method load_custom_characters_data() to load the custom characters
 # data into the CG RAM.
@@ -112,9 +112,12 @@ try:
     while True:
         # Remember that your sentences can only be 16 characters long!
         print("Printing custom characters:")
-        display.lcd_display_string("Custom caracters:", 1)  # Write line of text to first line of display
-        display.lcd_display_extended_string("{0x00}{0x01}{0x02}{0x03}{0x04}{0x05}{0x06}{0x07}", 2)  # Write line of text to second line of display
-        sleep(2) # Give time for the message to be read
+        # Write line of text to first line of display
+        display.lcd_display_string("Custom caracters:", 1)
+        # Write line of text to second line of display
+        display.lcd_display_extended_string(
+            "{0x00}{0x01}{0x02}{0x03}{0x04}{0x05}{0x06}{0x07}", 2)
+        sleep(2)  # Give time for the message to be read
 except KeyboardInterrupt:
     # If there is a KeyboardInterrupt (when you press ctrl+c), exit the program and cleanup
     print("Cleaning up!")
