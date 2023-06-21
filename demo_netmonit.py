@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-
 from os import devnull
-from subprocess import call, check_output
+from subprocess import call
+from subprocess import check_output
 from time import sleep
 
 import drivers

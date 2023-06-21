@@ -1,5 +1,6 @@
 from os.path import exists
-from re import findall, match
+from re import findall
+from re import match
 from subprocess import check_output
 from time import sleep
 

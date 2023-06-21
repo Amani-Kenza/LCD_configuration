@@ -1,15 +1,13 @@
 #! /usr/bin/env python
-
 # Extended strings program. Writes and updates special (extended) strings
 # with placeholders "{}" so, that it is possible to draw any character from the
 # characters table using a caharcter code.
 # Demo program for the I2C 16x2 Display from Ryanteck.uk
 # Created by Matthew Timmons-Brown for The Raspberry Pi Guy YouTube channel
-
 from time import sleep
 
-# Import necessary libraries for communication and display use
 import drivers
+# Import necessary libraries for communication and display use
 
 # Load the driver and set it to "display"
 # If you use something from the driver library use the "display." prefix first

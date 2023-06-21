@@ -1,5 +1,4 @@
 #! /usr/bin/env python
-
 from datetime import datetime
 from subprocess import check_output
 from time import sleep

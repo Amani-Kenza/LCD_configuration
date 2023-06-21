@@ -1,5 +1,4 @@
 #! /usr/bin/env python
-
 # Simple string program. Writes and updates strings.
 # Demo program for the I2C 16x2 Display from Ryanteck.uk
 # Created by Matthew Timmons-Brown for The Raspberry Pi Guy YouTube channel
@@ -8,16 +7,14 @@
 # Backlight: Usage, if lcddriver is set to "display" (like example below)
 # Backlight: display.lcd_backlight(0) # Turn backlight off
 # Backlight: display.lcd_backlight(1) # Turn backlight on
-
 # If drivers/i2c_dev.py is NOT in same folder with your scripts,
 # uncomment below and set path to i2c_dev, e.g. "/home/pi/lcd"
 # import sys
 # sys.path.append("/home/pi/lcd")
-
 from time import sleep
 
-# Import necessary libraries for communication and display use
 import drivers
+# Import necessary libraries for communication and display use
 
 # Load the driver and set it to "display"
 # If you use something from the driver library use the "display." prefix first

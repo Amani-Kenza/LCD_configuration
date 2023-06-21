@@ -1,5 +1,4 @@
 #! /usr/bin/env python
-
 # Custom characters string program. Writes strings with custom characters, that can't
 # be found in the characters table. It is possible to use a custom characters by definig
 # it's code on paseholder whyle useng and extended string.
@@ -12,11 +11,10 @@
 # data into the CG RAM.
 # Demo program for the I2C 16x2 Display from Ryanteck.uk
 # Created by Dmitry Safonov
-
 from time import sleep
 
-# Import necessary libraries for communication and display use
 import drivers
+# Import necessary libraries for communication and display use
 
 # Load the driver and set it to "display"
 # If you use something from the driver library use the "display." prefix first

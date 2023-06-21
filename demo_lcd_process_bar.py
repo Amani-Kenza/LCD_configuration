@@ -1,13 +1,11 @@
 #! /usr/bin/env python
-
 # Programm showing anumated progress bar using custom characters.
 # Demo program for the I2C 16x2 Display
 # Created by Dmitry Safonov
-
 from time import sleep
 
-# Import necessary libraries for communication and display use
 import drivers
+# Import necessary libraries for communication and display use
 
 # Load the driver and set it to "display"
 # If you use something from the driver library use the "display." prefix first
